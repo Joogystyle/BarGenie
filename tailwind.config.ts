@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -52,12 +53,31 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
       },
+      fontFamily: {
+        body: [
+          "var(--font-dm-sans)",
+          "Segoe UI",
+          "sans-serif",
+        ],
+        heading: [
+          "var(--font-playfair-display)",
+          "ui-serif",
+          "Georgia",
+          "Times New Roman",
+          "serif",
+        ],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        noir: "6px 6px 0 #050506",
+        "noir-sm": "4px 4px 0 #050506",
+        "noir-pressed": "2px 2px 0 #050506",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

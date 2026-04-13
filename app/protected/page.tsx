@@ -4,13 +4,15 @@ import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { Suspense } from "react";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function UserDetails() {
+  noStore();
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
 
   if (error || !data?.claims) {
-    redirect("/auth/login");
+    redirect("/auth?tab=login");
   }
 
   return JSON.stringify(data.claims, null, 2);
