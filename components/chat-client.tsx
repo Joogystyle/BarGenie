@@ -507,13 +507,13 @@ export function ChatClient({
           </div>
 
           <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:justify-end">
-            <Button asChild variant="outline" className="whitespace-nowrap">
+            <Button asChild className="halftone-ruby whitespace-nowrap text-primary-foreground">
               <Link href="/profile">Flavor profile</Link>
             </Button>
-            <Button asChild variant="outline" className="whitespace-nowrap">
+            <Button asChild className="halftone-ruby whitespace-nowrap text-primary-foreground">
               <Link href="/bottles">Bottle cabinet</Link>
             </Button>
-            <Button asChild variant="outline" className="whitespace-nowrap">
+            <Button asChild className="halftone-ruby whitespace-nowrap text-primary-foreground">
               <Link href="/library">Library</Link>
             </Button>
           </div>

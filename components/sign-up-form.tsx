@@ -42,18 +42,32 @@ export function SignUpForm({
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             username: trimmedUsername,
           },
-          emailRedirectTo: `${window.location.origin}/auth/confirm?next=/chat`,
         },
       });
       if (error) throw error;
-      router.push("/auth/sign-up-success");
+
+      if (!data.session) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError) {
+          throw new Error(
+            "Email confirmation is still enabled in Supabase. Disable 'Confirm email' in Auth settings to allow instant signup.",
+          );
+        }
+      }
+
+      router.replace("/chat");
+      router.refresh();
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
