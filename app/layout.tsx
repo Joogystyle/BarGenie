@@ -9,8 +9,30 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "BarGenie",
+  description:
+    "BarGenie is your AI cocktail bartender: discover drinks from bottles you already own, match every recommendation to your flavor profile, and save favorites to your cellar.",
+  openGraph: {
+    title: "BarGenie",
+    description:
+      "Your AI cocktail bartender for personalized recipes, smart substitutions, and a curated community drink library.",
+    images: [
+      {
+        url: "/images/landing-page.png",
+        width: 1200,
+        height: 630,
+        alt: "BarGenie AI cocktail bartender",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BarGenie",
+    description:
+      "Your AI cocktail bartender for personalized recipes, smart substitutions, and a curated community drink library.",
+    images: ["/images/landing-page.png"],
+  },
 };
 
 const dmSans = DM_Sans({
