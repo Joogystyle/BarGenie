@@ -95,6 +95,14 @@ export function ChatClient({
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const messagesRef = useRef<ChatMessage[]>([createWelcomeMessage()]);
 
+  const resetDraftSession = useCallback(() => {
+    const starterMessages = [createWelcomeMessage()];
+
+    setSessionId("");
+    setMessages(starterMessages);
+    messagesRef.current = starterMessages;
+  }, []);
+
   const ensureProfileExists = async () => {
     const { data: authData } = await supabase.auth.getUser();
     const metadataUsername =
@@ -190,13 +198,9 @@ export function ChatClient({
       const rows = (data ?? []) as ChatHistoryRow[];
 
       if (rows.length === 0) {
-        const newSessionId = globalThis.crypto.randomUUID();
-        const starterMessages = [createWelcomeMessage()];
-
-        setSessionId(newSessionId);
-        setMessages(starterMessages);
-        messagesRef.current = starterMessages;
-        syncSessionState(newSessionId, starterMessages);
+        setSessions([]);
+        setMessagesBySession({});
+        resetDraftSession();
         return;
       }
 
@@ -224,13 +228,9 @@ export function ChatClient({
       const initialSessionId = nextSessions[0]?.id;
 
       if (!initialSessionId) {
-        const newSessionId = globalThis.crypto.randomUUID();
-        const starterMessages = [createWelcomeMessage()];
-
-        setSessionId(newSessionId);
-        setMessages(starterMessages);
-        messagesRef.current = starterMessages;
-        syncSessionState(newSessionId, starterMessages);
+        setSessions([]);
+        setMessagesBySession({});
+        resetDraftSession();
         return;
       }
 
@@ -247,18 +247,13 @@ export function ChatClient({
           ? historyLoadError.message
           : "Unable to load your previous chats.",
       );
-
-      const newSessionId = globalThis.crypto.randomUUID();
-      const starterMessages = [createWelcomeMessage()];
-
-      setSessionId(newSessionId);
-      setMessages(starterMessages);
-      messagesRef.current = starterMessages;
-      syncSessionState(newSessionId, starterMessages);
+      setSessions([]);
+      setMessagesBySession({});
+      resetDraftSession();
     } finally {
       setIsLoadingHistory(false);
     }
-  }, [supabase, syncSessionState, userId]);
+  }, [resetDraftSession, supabase, userId]);
 
   useEffect(() => {
     void loadChatHistory();
@@ -435,13 +430,7 @@ export function ChatClient({
   };
 
   const createNewSession = () => {
-    const newSessionId = globalThis.crypto.randomUUID();
-    const starterMessages = [createWelcomeMessage()];
-
-    setSessionId(newSessionId);
-    setMessages(starterMessages);
-    messagesRef.current = starterMessages;
-    syncSessionState(newSessionId, starterMessages);
+    resetDraftSession();
     setError(null);
   };
 
@@ -487,13 +476,7 @@ export function ChatClient({
         return;
       }
 
-      const newSessionId = globalThis.crypto.randomUUID();
-      const starterMessages = [createWelcomeMessage()];
-
-      setSessionId(newSessionId);
-      setMessages(starterMessages);
-      messagesRef.current = starterMessages;
-      syncSessionState(newSessionId, starterMessages);
+      resetDraftSession();
     } catch (deleteSessionError) {
       setError(
         deleteSessionError instanceof Error
